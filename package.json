@@ -1,0 +1,13 @@
+{
+  "name": "ANHNX_MongoDB",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "anhnx4 dev",
+  "main": "src/server.js",
+  "author": "anhnx4",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
