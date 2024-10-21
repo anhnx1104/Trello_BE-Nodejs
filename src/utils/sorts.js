@@ -1,7 +1,7 @@
 /**
- * Updated by anhnx.com's author on August 17 2023
- * YouTube: https://youtube.com/anhnx
- * "A bit of fragrance clings to the hand that gives flowers!"
+ * Updated by anhnx.com's author on August 10 2024
+ *
+ * ""
  * ---
  * Order an array of objects based on another array & return new Ordered Array
  * The original array will not be modified.

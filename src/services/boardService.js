@@ -1,4 +1,5 @@
 import { slugify } from "~/utils/formatter";
+import { boardModel } from "~/models/boardModel";
 
 const createNew = async (reqBody) => {
   try {
@@ -6,8 +7,11 @@ const createNew = async (reqBody) => {
       ...reqBody,
       slug: slugify(reqBody.title),
     };
-    await newBoard.save();
-    res.status(StatusCodes.CREATED).json(newBoard);
+    const createBoard = await boardModel.createNew(newBoard);
+
+    const getNewBoard = await boardModel.findOneById(createBoard.insertedId);
+
+    return getNewBoard;
   } catch (error) {
     throw error;
   }
