@@ -1,5 +1,4 @@
 import { StatusCodes } from "http-status-codes";
-
 const creareNew = async (req, res, next) => {
   try {
     console.log(req.body);
@@ -7,12 +6,10 @@ const creareNew = async (req, res, next) => {
     res
       .status(StatusCodes.CREATED)
       .json({ message: "Post created Controler successfully" });
+
+    // throw new ApiError(StatusCodes.BAD_GATEWAY, "Teet err");
   } catch (error) {
     next(error);
-    console.log(error);
-    res
-      .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ errors: error.message });
   }
 };
 

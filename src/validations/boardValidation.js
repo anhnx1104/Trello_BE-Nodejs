@@ -1,5 +1,6 @@
 import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
+import ApiError from "~/utils/ApiErrors";
 
 const creareNew = async (req, res, next) => {
   const conrreactConditions = Joi.object({
@@ -12,11 +13,13 @@ const creareNew = async (req, res, next) => {
       abortEarly: false, // abort validation on the first error
     });
     next();
-  } catch (err) {
-    console.log(err);
-    res
-      .status(StatusCodes.UNPROCESSABLE_ENTITY)
-      .json({ errors: new Error(err).message });
+  } catch (error) {
+    const errorMessage = new Error(error).message;
+    const customError = new ApiError(
+      StatusCodes.UNPROCESSABLE_ENTITY,
+      errorMessage
+    );
+    next(customError);
   }
 };
 
