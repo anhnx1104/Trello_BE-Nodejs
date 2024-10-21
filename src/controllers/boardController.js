@@ -1,13 +1,12 @@
 import { StatusCodes } from "http-status-codes";
+import { boardService } from "~/services/boardService";
 const creareNew = async (req, res, next) => {
   try {
     console.log(req.body);
 
-    res
-      .status(StatusCodes.CREATED)
-      .json({ message: "Post created Controler successfully" });
+    const createBoard = await boardService.createNew(req.body);
 
-    // throw new ApiError(StatusCodes.BAD_GATEWAY, "Teet err");
+    res.status(StatusCodes.CREATED).json({ message: createBoard });
   } catch (error) {
     next(error);
   }
