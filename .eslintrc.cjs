@@ -13,6 +13,7 @@ module.exports = {
     // Common
     "no-console": 1,
     "no-extra-boolean-cast": 0,
+    "no-useless-catch": false,
     "no-lonely-if": 1,
     "no-unused-vars": 1,
     "no-trailing-spaces": 1,
@@ -21,14 +22,13 @@ module.exports = {
     "space-before-blocks": ["error", "always"],
     "object-curly-spacing": [1, "always"],
     indent: ["warn", 2],
-    semi: [1, "never"],
-    quotes: ["error", "single"],
+    semi: ["error", "always", { omitLastInOneLineBlock: true }],
+
+    quotes: ["error", "double"],
+
     "array-bracket-spacing": 1,
     "linebreak-style": 0,
     "no-unexpected-multiline": "warn",
     "keyword-spacing": 1,
-    "comma-dangle": 1,
-    "comma-spacing": 1,
-    "arrow-spacing": 1,
   },
 };

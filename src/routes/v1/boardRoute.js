@@ -9,5 +9,6 @@ Router.route("/")
     res.status(StatusCodes.OK).json({ message: "APi get list boardRoutes" });
   })
   .post(boardValidation.creareNew, boardController.creareNew);
+Router.route("/:id").get(boardController.getDetails).put();
 
 export const boardRoutes = Router;

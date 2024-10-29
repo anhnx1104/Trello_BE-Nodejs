@@ -1,5 +1,5 @@
-/**
- * Updated by anhnx.com's author on August 10 2024
- *
- * ""
- */
+export const WHITELIST_DOMAINS = [
+  "http://localhost:5173",
+
+  // Add more domains here if needed
+];
