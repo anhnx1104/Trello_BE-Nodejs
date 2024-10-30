@@ -2,6 +2,7 @@ import { slugify } from "~/utils/formatter";
 import { boardModel } from "~/models/boardModel";
 import { StatusCodes } from "http-status-codes";
 import ApiError from "~/utils/ApiErrors";
+import { cloneDeep } from "lodash";
 
 const createNew = async (reqBody) => {
   try {
@@ -25,7 +26,15 @@ const getDetails = async (boardId) => {
       throw new ApiError(StatusCodes.NOT_FOUND, "Board not found");
     }
 
-    return board;
+    //  sử dụng cloneDeep để kh ảnh hưởng tới board ban đầu
+    const resBorad = cloneDeep(board);
+    resBorad.columns.forEach((column) => {
+      column.cards = resBorad.cards.filter(
+        (card) => card.columnId.toString() === column._id.toString()
+      );
+    });
+    delete resBorad.cards;
+    return resBorad;
   } catch (error) {
     throw error;
   }

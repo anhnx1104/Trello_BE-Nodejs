@@ -17,7 +17,7 @@ const getDetails = async (req, res, next) => {
 
     const board = await boardService.getDetails(boardId);
 
-    res.status(StatusCodes.OK).json({ message: board });
+    res.status(StatusCodes.OK).json({ data: board });
   } catch (error) {
     next(error);
   }
