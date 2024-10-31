@@ -1,6 +1,4 @@
-### Bộ code base để bắt đầu học khóa MERN Stack Pro (VIẾT CÁC REST API CHUẨN CHỈNH) - Lập Trình qua dự án thực tế Trello Clone !
-
-### Requirements - Thông tin của bộ Code Base này - Chuẩn các phiên bản dưới đây để bắt đầu học: (Semantic Versioning)
+### Bộ code base để bắt đầu học (VIẾT CÁC REST API CHUẨN CHỈNH) - Lập Trình qua dự án thực tế Trello Clone !
 
 ```
 * nodejs = v18.16.0
@@ -21,6 +19,6 @@
 * "babel-plugin-module-resolver": "^5.0.0"
 ```
 
-### About Me - Thông tin về mình:
+### About Me - Thông tin về mình: Anhnx
 
-Author: **anhnx ** & **CodeTQ**
+Author: **anhnx \*\***

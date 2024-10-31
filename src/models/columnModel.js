@@ -1,5 +1,7 @@
 import Joi from "joi";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/models/validators";
+import { GET_DB } from "~/config/mongodb";
+import { ObjectId } from "mongodb";
 
 // Define Collection (name & schema)
 const COLUMN_COLLECTION_NAME = "columns";
@@ -19,8 +21,58 @@ const COLUMN_COLLECTION_SCHEMA = Joi.object({
   updatedAt: Joi.date().timestamp("javascript").default(null),
   _destroy: Joi.boolean().default(false),
 });
+const validationBeforeCreate = async (data) => {
+  return await COLUMN_COLLECTION_SCHEMA.validateAsync(data, {
+    abortEarly: false, // abort validation on the first error
+  });
+};
+const createNew = async (data) => {
+  try {
+    const validData = await validationBeforeCreate(data);
+    const newColumntoAdd = {
+      ...validData,
+      boardId: new ObjectId(validData.boardId),
+    };
+
+    const createdColumn = await GET_DB()
+      .collection(COLUMN_COLLECTION_NAME)
+      .insertOne(newColumntoAdd);
+
+    return createdColumn;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+const findOneById = async (id) => {
+  try {
+    const findBoardId = await GET_DB()
+      .collection(COLUMN_COLLECTION_NAME)
+      .findOne({ _id: new ObjectId(id) });
+
+    return findBoardId;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+const pushCardOrderIds = async (card) => {
+  try {
+    const result = await GET_DB()
+      .collection(COLUMN_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(card.columnId) },
+        { $push: { cardOrderIds: new ObjectId(card._id) } },
+        { ReturnDocument: "after" }
+      );
+    return result.value;
+  } catch (error) {}
+};
 
 export const columnModel = {
   COLUMN_COLLECTION_NAME,
   COLUMN_COLLECTION_SCHEMA,
+  createNew,
+  findOneById,
+  pushCardOrderIds,
 };
