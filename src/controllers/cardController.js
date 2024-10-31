@@ -7,7 +7,7 @@ const creareNew = async (req, res, next) => {
 
     const createCard = await cardService.createNew(req.body);
 
-    res.status(StatusCodes.CREATED).json({ message: createCard });
+    res.status(StatusCodes.CREATED).json(createCard);
   } catch (error) {
     next(error);
   }
