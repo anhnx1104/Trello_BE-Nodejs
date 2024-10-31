@@ -2,7 +2,7 @@
  * Updated by anhnx.com's author on August 10 2024
  */
 import Joi from "joi";
-import { ObjectId } from "mongodb";
+import { ObjectId, ReturnDocument } from "mongodb";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/models/validators";
 import { GET_DB } from "~/config/mongodb";
 import { BOARD_TYPE } from "~/utils/constants";
@@ -84,10 +84,23 @@ const getDetails = async (id) => {
       ])
       .toArray();
 
-    return result[0] || {};
+    return result[0] || null;
   } catch (err) {
     throw new Error(err);
   }
+};
+
+const pushColumnOderIds = async (column) => {
+  try {
+    const result = await GET_DB()
+      .collection(BOARD_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(column.boardId) },
+        { $push: { columnOrderIds: new ObjectId(column._id) } },
+        { ReturnDocument: "after" }
+      );
+    return result.value;
+  } catch (error) {}
 };
 export const boardModel = {
   BOARD_COLLECTION_NAME,
@@ -95,6 +108,7 @@ export const boardModel = {
   createNew,
   findOneById,
   getDetails,
+  pushColumnOderIds,
 };
 // boardId = "6721da00bee5d8bbf2540f89";
 
