@@ -9,6 +9,13 @@ Router.route("/")
     res.status(StatusCodes.OK).json({ message: "APi get list boardRoutes" });
   })
   .post(boardValidation.creareNew, boardController.creareNew);
-Router.route("/:id").get(boardController.getDetails).put();
+Router.route("/:id")
+  .get(boardController.getDetails)
+  .put(boardValidation.update, boardController.update);
 
+// di chuyển card giữa các colums khác nhau
+Router.route("/supports/moving_card").put(
+  boardValidation.moveCardToDifferrentColums,
+  boardController.moveCardToDifferrentColums
+);
 export const boardRoute = Router;

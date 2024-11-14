@@ -28,6 +28,34 @@ const creareNew = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  const conrreactConditions = Joi.object({
+    // boardId: Joi.string()
+    //   .pattern(OBJECT_ID_RULE)
+    //   .message(OBJECT_ID_RULE_MESSAGE),
+
+    title: Joi.string().min(3).max(50).trim().strict(),
+    cardOderIds: Joi.array().items(
+      Joi.string().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE)
+    ),
+  });
+
+  try {
+    await conrreactConditions.validateAsync(req.body, {
+      abortEarly: false, // abort validation on the first error
+      allowUnknown: true, // allow unknown keys in the request body
+    });
+    next();
+  } catch (error) {
+    const errorMessage = new Error(error).message;
+    const customError = new ApiError(
+      StatusCodes.UNPROCESSABLE_ENTITY,
+      errorMessage
+    );
+    next(customError);
+  }
+};
 export const columnValidation = {
   creareNew,
+  update,
 };

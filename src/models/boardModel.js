@@ -26,6 +26,8 @@ const BOARD_COLLECTION_SCHEMA = Joi.object({
   _destroy: Joi.boolean().default(false),
 });
 
+const IVALID_UPDATE_FIELDS = ["_id", "updatedAt"];
+
 const validationBeforeCreate = async (data) => {
   return await BOARD_COLLECTION_SCHEMA.validateAsync(data, {
     abortEarly: false, // abort validation on the first error
@@ -99,9 +101,35 @@ const pushColumnOderIds = async (column) => {
         { $push: { columnOrderIds: new ObjectId(column._id) } },
         { ReturnDocument: "after" }
       );
-    return result.value;
+    return result;
   } catch (error) {}
 };
+
+const update = async (boardId, updateData) => {
+  try {
+    Object.keys(updateData).forEach((key) => {
+      if (IVALID_UPDATE_FIELDS.includes(key)) {
+        delete updateData[key];
+      }
+    });
+
+    if (updateData.columnOrderIds) {
+      updateData.columnOrderIds = updateData.columnOrderIds.map(
+        (_id) => new ObjectId(_id)
+      );
+    }
+
+    const result = await GET_DB()
+      .collection(BOARD_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(boardId) },
+        { $set: updateData },
+        { ReturnDocument: "after" }
+      );
+    return result;
+  } catch (error) {}
+};
+
 export const boardModel = {
   BOARD_COLLECTION_NAME,
   BOARD_COLLECTION_SCHEMA,
@@ -109,6 +137,7 @@ export const boardModel = {
   findOneById,
   getDetails,
   pushColumnOderIds,
+  update,
 };
 // boardId = "6721da00bee5d8bbf2540f89";
 

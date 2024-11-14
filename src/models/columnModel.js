@@ -65,7 +65,34 @@ const pushCardOrderIds = async (card) => {
         { $push: { cardOrderIds: new ObjectId(card._id) } },
         { ReturnDocument: "after" }
       );
-    return result.value;
+    return result;
+  } catch (error) {}
+};
+
+const IVALID_UPDATE_FIELDS = ["_id", "boardId", "updatedAt"];
+
+const update = async (columnId, updateData) => {
+  try {
+    Object.keys(updateData).forEach((key) => {
+      if (IVALID_UPDATE_FIELDS.includes(key)) {
+        delete updateData[key];
+      }
+    });
+
+    if (updateData.cardOrderIds) {
+      updateData.cardOrderIds = updateData.cardOrderIds.map(
+        (_id) => new ObjectId(_id)
+      );
+    }
+
+    const result = await GET_DB()
+      .collection(COLUMN_COLLECTION_NAME)
+      .findOneAndUpdate(
+        { _id: new ObjectId(columnId) },
+        { $set: updateData },
+        { ReturnDocument: "after" }
+      );
+    return result;
   } catch (error) {}
 };
 
@@ -75,4 +102,5 @@ export const columnModel = {
   createNew,
   findOneById,
   pushCardOrderIds,
+  update,
 };
